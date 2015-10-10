@@ -23,6 +23,10 @@ class Predictor
     @corpus = Corpus.new(corpus_file[corpus_type], BrownCorpusFile)
   end
 
+  def get_unigrams
+    @corpus.unigrams
+  end
+
   def get_bigrams
     @corpus.bigrams
   end

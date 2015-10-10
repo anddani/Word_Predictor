@@ -1,12 +1,16 @@
-require 'corpus/predictor'
+#!/usr/bin/env ruby
+require "./corpus/predictor"
 
 ngram_val = 2
-predict = Predictor.new(ngram_val,:fiction)
+predict = Predictor.new(ngram_val,:experiment)
 
 grams = predict.get_trigrams
 
+# Get all unique unigrams
+unigrams = predict.get_unigrams.flatten.uniq
+
 #build a list of occurrences
-puts grams.inspect
+# puts grams.inspect
 
 number_of_occurrences = Hash.new(0)
 
@@ -14,39 +18,21 @@ grams.each do |gram|
   number_of_occurrences[gram] += 1
 end
 
-# remaining = grams
-# result = []
-#
-# grams.each do |gram|
-#   number_of_occurrences = 0
-#   remaining.each do |rem|
-#     if gram == rem
-#       number_of_occurrences += 1
-#     end
-#   end
-#   result += [gram + [number_of_occurrences]]
-#   remaining.delete(gram)
-# end
 puts "DONE WITH COUNTING!"
-
-# sorted = result.sort_by {|elem| elem[ngram_val]}.reverse
-# puts "DONE WITH SORTING!"
-# puts sorted.inspect
-
-# File.open("model.txt", "w+") do |f|
-#   sorted.each { |first| 
-#     first.each { |second| 
-#       f.print(second.to_s + " ")
-#       STDOUT.flush
-#     }
-#     f.puts("")
-#   }
-# end
+puts number_of_occurrences.inspect
 
 File.open("model.txt", "w+") do |f|
   number_of_occurrences.each do |words, occurences| 
     f.puts((words << occurences).join(" "))
     STDOUT.flush
+  end
+end
+
+# puts unigrams.inspect
+
+File.open("unigrams.txt", "w+") do |f|
+  unigrams.each do |word|
+    f.puts(word)
   end
 end
 
