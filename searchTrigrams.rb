@@ -1,46 +1,60 @@
 #!/usr/bin/env ruby
+require './corpus/trigrammodel'
 
-gramTable = Hash.new()
+v_size = 0
+File.open("v_size.txt", "r") do |f|
+  v_size = f.gets.to_i
+end
+
+puts "v_size: " + v_size.to_s
+
+unigrams = Hash.new()
+File.open("unigrams.txt", "r") do |f|
+  while (line = f.gets)
+    line = line.split(" ")
+    key = line[0]
+    unigrams[key] = line[1].to_i
+  end
+end
+
+puts "DONE READING UNIGRAMS"
+
+bigrams = Hash.new()
+File.open("bigrams.txt", "r") do |f|
+  while (line = f.gets)
+    line = line.split(" ")
+    val = {line[1] => line[2].to_i}
+    key = line[0]
+    bigrams[key] ||= {}
+    bigrams[key] = val.merge!(bigrams[key])
+  end
+end
+
+puts "DONE READING BIGRAMS"
+
+trigrams = Hash.new()
 File.open("trigrams.txt", "r") do |f|
   while (line = f.gets)
     line = line.split(" ")
-    # puts "line: " + line.inspect
     val = {line[2] => line[3].to_i}
-    # puts "val: " + val.inspect
-    # gramTable.merge!(line[0] + " " + line[1] => val)
-    # gramTable.store(line[0] + " " + line[1], val)
     key = line[0] + " " + line[1]
-    gramTable[key] ||= {}
-    gramTable[key] = val.merge!(gramTable[key])
-    # puts "hash: " + gramTable.inspect
+    trigrams[key] ||= {}
+    trigrams[key] = val.merge!(trigrams[key])
   end
 end
 
-unigrams = {}
-File.open("unigrams.txt", "r") do |f|
-  while (line = f.gets) do
-    line.delete!("\n")
-    unigrams[line] = 0
-  end
-  # Insert in trigrams hash
-  # while (line = f.gets)
-  #   line.delete!("\n")
-  #   gramTable.each_key do |k|
-  #     if gramTable[k][line] == nil
-  #       val = {line => 0}
-  #       gramTable[k] = val.merge!(gramTable[k])
-  #     end
-  #   end
-  # end
-end
+puts "DONE READING TRIGRAMS"
 
-puts gramTable.inspect
-puts unigrams.inspect
+# puts unigrams.inspect
+# puts bigrams.inspect
+# puts trigrams.inspect
 
-puts "TESTCASE gramtable['I am']['glad']: " + gramTable['I am']['glad'].to_s
-puts "TESTCASE gramtable['I am']['sad']: " + gramTable['I am']['sad'].to_s
-# puts "TESTCASE gramtable['I try']['often']: " + gramTable['I try']['often'].to_s
-puts "TESTING" if gramTable['I try'] == nil
+# puts "TESTCASE gramtable['I am']['glad']: " + trigrams['I am']['glad'].to_s
+# puts "TESTCASE gramtable['I am']['sad']: " + trigrams['I am']['sad'].to_s
+
+model = Trigrammodel.new(v_size, unigrams, bigrams, trigrams)
+
+puts model.most_probable_next_word("I try")
 
 # print "->"
 # while sentence = gets().delete("\n") != "exit" do
