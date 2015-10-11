@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 gramTable = Hash.new()
-File.open("model.txt", "r") do |f|
+File.open("trigrams.txt", "r") do |f|
   while (line = f.gets)
     line = line.split(" ")
     # puts "line: " + line.inspect
@@ -33,3 +33,9 @@ puts gramTable.inspect
 puts "TESTCASE gramtable['I am']['glad']: " + gramTable['I am']['glad'].to_s
 puts "TESTCASE gramtable['I am']['sad']: " + gramTable['I am']['sad'].to_s
 puts "TESTCASE gramtable['I try']['often']: " + gramTable['I try']['often'].to_s
+
+print "->"
+while sentence = gets().delete("\n") != "exit" do
+
+print "->"
+end
