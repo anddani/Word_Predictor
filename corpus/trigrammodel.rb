@@ -77,8 +77,8 @@ class Trigrammodel
       return (tempProb*probability_of_sequence(trigram_words[0] + " " + trigram_words[1]))
     elsif words.count >= 2 and @bigrams[bigram_words] != nil
       # P(w2|w1) = c(w1,w2)/c(w1)
-      w1w2 = @bigrams[bigram_words[0]][bigram_words[1]]
-      w1 = @unigrams[bigram_words[0]]
+      w1w2 = @bigrams[bigram_words[0]][bigram_words[1]].to_f
+      w1 = @unigrams[bigram_words[0]].to_f
       tempProb = (w1w2/w1)
       # P(w2|w1) * (P(w1))
       return (tempProb*probability_of_sequence(bigram_words[0]))

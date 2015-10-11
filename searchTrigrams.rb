@@ -54,7 +54,7 @@ puts "DONE READING TRIGRAMS"
 
 model = Trigrammodel.new(v_size, unigrams, bigrams, trigrams)
 
-puts model.most_probable_next_word("I try")
+puts model.most_probable_next_word("I I")
 
 # print "->"
 # while sentence = gets().delete("\n") != "exit" do
