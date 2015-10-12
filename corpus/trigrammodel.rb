@@ -75,17 +75,20 @@ class Trigrammodel
       # P(w3|w1,w2) * (P(w1)*P(w2|w1))
       # puts "w1 w2: " + trigram_words[0] + " " + trigram_words[1] + " tempProb: " + tempProb.to_s
       return (tempProb*probability_of_sequence(trigram_words[0] + " " + trigram_words[1]))
-    elsif words.count >= 2 and @bigrams[bigram_words] != nil
+    elsif words.count >= 2 and @bigrams[bigram_words[0]] != nil
       # P(w2|w1) = c(w1,w2)/c(w1)
       w1w2 = @bigrams[bigram_words[0]][bigram_words[1]].to_f
       w1 = @unigrams[bigram_words[0]].to_f
       tempProb = (w1w2/w1)
       # P(w2|w1) * (P(w1))
       return (tempProb*probability_of_sequence(bigram_words[0]))
-    else
+    elsif words.count >= 1 and @unigrams[unigram_word] != nil
       # P(w1) = c(w1)/V
       # puts "word: " + unigram_word.to_s + " c(word):" + @unigrams[unigram_word].to_s + " size: " + @v_size.to_s + " c(word)/size: " + (@unigrams[unigram_word]/@v_size.to_f).to_s
       return (@unigrams[unigram_word]/@v_size.to_f)
+    else
+      puts "NO SUCH WORD IN VOCABULARY"
+      return 0.0
     end
 
   end

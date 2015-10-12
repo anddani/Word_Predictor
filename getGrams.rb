@@ -2,7 +2,7 @@
 require "./corpus/predictor"
 
 ngram_val = 2
-predict = Predictor.new(ngram_val,:experiment)
+predict = Predictor.new(ngram_val,:fiction)
 
 unigrams = predict.get_unigrams
 bigrams = predict.get_bigrams
