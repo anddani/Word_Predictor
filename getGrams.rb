@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
-require "./corpus/predictor"
+require "./corpus/corpusreader"
 
 ngram_val = 2
-predict = Predictor.new(ngram_val,:fiction)
+predict = Corpusreader.new(ngram_val,:experiment)
 
 unigrams = predict.get_unigrams
 bigrams = predict.get_bigrams
