@@ -54,16 +54,29 @@ puts "DONE READING TRIGRAMS"
 
 model = Trigrammodel.new(v_size, unigrams, bigrams, trigrams)
 
+# sen = "I am"
+# result = model.most_probable_next_word(sen)
+# puts "Most probable next word for " + sen + ": " + result + " With a probability of " + model.probability_of_sequence(sen + " " + result).to_s
+#
+# sen = "I can"
+# result = model.most_probable_next_word(sen)
+# puts "Most probable next word for " + sen + ": " + result + " With a probability of " + model.probability_of_sequence(sen + " " + result).to_s
+
+sen = "You am"
+result = model.most_probable_next_word(sen)
+puts "Most probable next word for " + sen + ": " + result
 sen = "I am"
 result = model.most_probable_next_word(sen)
-puts "Most probable next word for " + sen + ": " + result + " With a probability of " + model.probability_of_sequence(sen + " " + result).to_s
+puts "Most probable next word for " + sen + ": " + result
+sen = "I ."
+result = model.most_probable_next_word(sen)
+puts "Most probable next word for " + sen + ": " + result
 
-print "->"
-while (sentence = gets().chomp) != "exit" do
-  result = model.most_probable_next_word(sentence)
-  prob = model.probability_of_sequence(sentence + " " + result)
-  puts sentence + " " + result
-  puts "With a probability of: " + prob.to_s
-  print "->"
-  # puts sentence
-end
+# print "->"
+# while (sentence = gets().chomp) != "exit" do
+#   result = model.most_probable_next_word(sentence)
+#   prob = model.probability_of_sequence(sentence + " " + result)
+#   puts sentence + " " + result
+#   puts "With a probability of: " + prob.to_s
+#   print "->"
+# end
