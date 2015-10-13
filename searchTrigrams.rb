@@ -71,6 +71,12 @@ puts "Most probable next word for " + sen + ": " + result
 sen = "I ."
 result = model.most_probable_next_word(sen)
 puts "Most probable next word for " + sen + ": " + result
+sen = "Why try"
+result = model.most_probable_next_word(sen)
+puts "Most probable next word for " + sen + ": " + result
+sen = "I try"
+result = model.most_probable_next_word(sen)
+puts "Most probable next word for " + sen + ": " + result
 
 # print "->"
 # while (sentence = gets().chomp) != "exit" do

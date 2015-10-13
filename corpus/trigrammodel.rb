@@ -26,9 +26,8 @@ class Trigrammodel
 
       # @trigrams[trigram_key].each_key do |word|
       @unigrams.each_key do |word|
-        # puts "BIGRAMS WORDS: " + trigram_key + " " + word
         tempProb = probability_of_sequence(trigram_key + " " + word)
-        puts trigram_key+ " " + word + " prob: " + tempProb.to_s
+        puts trigram_key + " " + word + " prob: " + tempProb.round(4).to_s
         # if P(w1)*P(w2|w1)*P(w3|w1,w2) > highest_probability
         if tempProb > highest_probability
           highest_probability = tempProb
@@ -37,7 +36,7 @@ class Trigrammodel
       end
 
       puts "ERROR IN TRIGRAMS" if highest_probability == 0.0
-      puts "Trigram, highest_probability: " + highest_probability.to_s
+      puts "Trigram, highest_probability: " + highest_probability.round(4).to_s
       return most_probable_word
     ## if we can find a bigram and bigram exists
     elsif words.count >= 1 and @bigrams[bigram_key] != nil
@@ -48,14 +47,14 @@ class Trigrammodel
       @unigrams.each_key do |word|
         tempProb = probability_of_sequence(bigram_key + " " + word)
         # if P(w1)*P(w2|w1) > highest_probability
-        puts bigram_key + " " + word + " prob: " + tempProb.to_s
+        puts bigram_key + " " + word + " prob: " + tempProb.round(4).to_s
         if tempProb > highest_probability
           highest_probability = tempProb
           most_probable_word = word
         end
       end
       puts "ERROR IN BIGRAMS" if highest_probability == 0.0
-      puts "Bigram, highest_probability: " + highest_probability.to_s
+      puts "Bigram, highest_probability: " + highest_probability.round(4).to_s
       return most_probable_word
     ## return random unigram?
     else
@@ -63,15 +62,14 @@ class Trigrammodel
       @unigrams.each_key do |word|
         tempProb = probability_of_sequence(word)
         # if P(w1)*P(w2|w1) > highest_probability
-        puts bigram_key + " " + word + " prob: " + tempProb.to_s
+        puts bigram_key + " " + word + " prob: " + tempProb.round(4).to_s
         if tempProb > highest_probability
           highest_probability = tempProb
           most_probable_word = word
         end
       end
-      puts "unigram, highest_probability: " + highest_probability.to_s
+      puts "unigram, highest_probability: " + highest_probability.round(4).to_s
       return most_probable_word
-      # return "FAIL"
     end
   end
 
@@ -87,34 +85,23 @@ class Trigrammodel
     
     if words.count >= 3
       # P(w3|w1,w2) = c*(w1,w2,w3)/c*(w1,w2)
-      # w1w2w3 = @trigrams[trigram_words[0] + " " + trigram_words[1]][trigram_words[2]].to_f
-      # w1w2 = @bigrams[trigram_words[0]][trigram_words[1]].to_f
       w1w2w3 = add_one(trigram_words.join(" "))
       w1w2 = add_one(trigram_words[0] + " " + trigram_words[1])
-      # puts "w1w2w3: " + w1w2w3.to_s + " w1w2: " + w1w2.to_s
       tempProb = (w1w2w3/w1w2)
       # P(w3|w1,w2) * (P(w1)*P(w2|w1))
       return (tempProb*probability_of_sequence(trigram_words[0] + " " + trigram_words[1]))
     elsif words.count >= 2
       # P(w2|w1) = c*(w1,w2)/c*(w1)
-      # w1w2 = @bigrams[bigram_words[0]][bigram_words[1]].to_f
-      # w1 = @unigrams[bigram_words[0]].to_f
       w1w2 = add_one(bigram_words.join(" "))
-      # puts "W1W2" if w1w2 == 0.0
       w1 = add_one(bigram_words[0])
-      # puts "W1" if w1 == 0.0
-      # puts "w1w2: " + w1w2.to_s + " w1: " + w1.to_s
       return 0.0 if w1w2 == nil or w1 == nil
       tempProb = (w1w2/w1)
       # P(w2|w1) * (P(w1))
       return (tempProb*probability_of_sequence(bigram_words[0]))
     else
       # P(w1) = c*(w1)/V
-      # puts "w1 unigram: " + add_one(unigram_word).to_s
       return (add_one(unigram_word)/@v_size.to_f)
-      # return (@unigrams[unigram_word]/@v_size.to_f)
     end
-
   end
 
   # returns smoothed count
@@ -131,32 +118,32 @@ class Trigrammodel
     if words.count == 3
       if @trigrams[trigram_words[0] + " " + trigram_words[1]] != nil
         if @trigrams[trigram_words[0] + " " + trigram_words[1]][trigram_words[2]] != nil
-          # return (c(w1,w2,w3) + 1)*c(w1,w2)/(c(w1,w2)+V(bigrams)))
+          # return (c(w1,w2,w3) + 1)*c(w1,w2)/(c(w1,w2)+V))
           cw1w2w3 = @trigrams[trigram_words[0] + " " + trigram_words[1]][trigram_words[2]]
           cw1w2 = @bigrams[trigram_words[0]][trigram_words[1]]
 
-          return ((cw1w2w3 + 1)*cw1w2/(cw1w2+@bigrams.length).to_f)
+          return ((cw1w2w3 + 1)*cw1w2/(cw1w2+@v_size).to_f)
         else
-          # return (1)*c(w1,w2)/(c(w1,w2)+V(bigrams))
+          # return (1)*c(w1,w2)/(c(w1,w2)+V)
           cw1w2 = @bigrams[trigram_words[0]][trigram_words[1]]
-          return (cw1w2/(cw1w2+@bigrams.length).to_f)
+          return (cw1w2/(cw1w2+@v_size).to_f)
         end
       else 
-        # words not fount in vocabulary
+        # words not found in vocabulary
         return 0.0
       end
     elsif words.count == 2
       if @bigrams[bigram_words[0]] != nil
         if @bigrams[bigram_words[0]][bigram_words[1]] != nil
-          # return (c(w1,w2) + 1)*c(w1)/(c(w1)+V(unigrams))
+          # return (c(w1,w2) + 1)*c(w1)/(c(w1)+V)
           cw1w2 = @bigrams[bigram_words[0]][bigram_words[1]]
           cw1 = @unigrams[bigram_words[0]]
 
-          return ((cw1w2 + 1)*cw1/(cw1+@unigrams.length).to_f)
+          return ((cw1w2 + 1)*cw1/(cw1+@v_size).to_f)
         else
-          # return (1)*c(w1)/(c(w1)+V(unigrams))
+          # return (1)*c(w1)/(c(w1)+V)
           cw1 = @unigrams[bigram_words[0]]
-          return (cw1/(cw1+@unigrams.length).to_f)
+          return (cw1/(cw1+@v_size).to_f)
         end
       else
         # words not found in vocabulary
@@ -164,9 +151,9 @@ class Trigrammodel
       end
     elsif words.count == 1
       if @unigrams[unigram_word] != nil
-        # return (1)*c(w1)/(c(w1)+V(bigrams))
+        # return (1)*c(w1)/(c(w1)+V)
         cw1 = @unigrams[unigram_word]
-        return (cw1/(cw1+@unigrams.length).to_f)
+        return (cw1/(cw1+@v_size).to_f)
       else
         # word not found in vocabulary
         return 0.0
