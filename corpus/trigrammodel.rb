@@ -36,7 +36,7 @@ class Trigrammodel
       end
 
       puts "ERROR IN TRIGRAMS" if highest_probability == 0.0
-      puts "Trigram, highest_probability: " + highest_probability.round(4).to_s
+      puts "Trigram, highest_probability: " + highest_probability.round(4).to_s + " Perplexity: " + perplexity(highest_probability, 3).round(4).to_s
       return most_probable_word
     ## if we can find a bigram and bigram exists
     elsif words.count >= 1 and @bigrams[bigram_key] != nil
@@ -54,7 +54,7 @@ class Trigrammodel
         end
       end
       puts "ERROR IN BIGRAMS" if highest_probability == 0.0
-      puts "Bigram, highest_probability: " + highest_probability.round(4).to_s
+      puts "Bigram, highest_probability: " + highest_probability.round(4).to_s + " Perplexity: " + perplexity(highest_probability, 2).round(4).to_s
       return most_probable_word
     ## return random unigram?
     else
@@ -68,9 +68,13 @@ class Trigrammodel
           most_probable_word = word
         end
       end
-      puts "unigram, highest_probability: " + highest_probability.round(4).to_s
+      puts "Unigram, highest_probability: " + highest_probability.round(4).to_s + " Perplexity: " + perplexity(highest_probability, 1).round(4).to_s
       return most_probable_word
     end
+  end
+
+  def perplexity(probability, gram)
+    return probability ** (-1/gram)
   end
 
   def probability_of_sequence(sequence)
@@ -88,7 +92,7 @@ class Trigrammodel
       w1w2w3 = add_one(trigram_words.join(" "))
       w1w2 = add_one(trigram_words[0] + " " + trigram_words[1])
       tempProb = (w1w2w3/w1w2)
-      # P(w3|w1,w2) * (P(w1)*P(w2|w1))
+      # P(w1,w2,w3) = P(w3|w1,w2) * (P(w1)*P(w2|w1))
       return (tempProb*probability_of_sequence(trigram_words[0] + " " + trigram_words[1]))
     elsif words.count >= 2
       # P(w2|w1) = c*(w1,w2)/c*(w1)
@@ -96,7 +100,7 @@ class Trigrammodel
       w1 = add_one(bigram_words[0])
       return 0.0 if w1w2 == nil or w1 == nil
       tempProb = (w1w2/w1)
-      # P(w2|w1) * (P(w1))
+      # P(w1,w2) = P(w2|w1) * (P(w1))
       return (tempProb*probability_of_sequence(bigram_words[0]))
     else
       # P(w1) = c*(w1)/V
