@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
-require "./corpus/corpusreader"
+require_relative 'corpus/corpusreader'
 
-ngram_val = 2
-predict = Corpusreader.new(ngram_val,:experiment)
+ngram_type = :mystery # Change this to the desired corpus
+predict = Corpusreader.new(ngram_type)
+puts ngram_type.to_s
 
 unigrams = predict.get_unigrams
 bigrams = predict.get_bigrams
@@ -10,8 +11,6 @@ trigrams = predict.get_trigrams
 v_size = unigrams.flatten.uniq.size
 
 #build a list of occurrences
-# puts grams.inspect
-
 number_of_occurrences_unigrams = Hash.new(0)
 number_of_occurrences_bigrams = Hash.new(0)
 number_of_occurrences_trigrams = Hash.new(0)
@@ -51,8 +50,6 @@ File.open("bigrams.txt", "w+") do |f|
   end
 end
 
-# puts number_of_occurrences_trigrams.inspect
-
 # Save TRIGRAMS and their frequency to file
 File.open("trigrams.txt", "w+") do |f|
   number_of_occurrences_trigrams.each do |words, occurences| 
@@ -60,7 +57,5 @@ File.open("trigrams.txt", "w+") do |f|
     STDOUT.flush
   end
 end
-
-# puts unigrams.inspect
 
 puts "DONE WITH SAVING"

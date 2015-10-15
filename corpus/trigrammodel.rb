@@ -24,10 +24,8 @@ class Trigrammodel
       # get w3 from grams with highest P(w1,w2,w3) = P(w1)*P(w2|w1)*P(w3|w1,w2)
       highest_probability = 0.0
 
-      # @trigrams[trigram_key].each_key do |word|
       @unigrams.each_key do |word|
         tempProb = probability_of_sequence(trigram_key + " " + word)
-        puts trigram_key + " " + word + " prob: " + tempProb.round(4).to_s
         # if P(w1)*P(w2|w1)*P(w3|w1,w2) > highest_probability
         if tempProb > highest_probability
           highest_probability = tempProb
@@ -36,25 +34,23 @@ class Trigrammodel
       end
 
       puts "ERROR IN TRIGRAMS" if highest_probability == 0.0
-      puts "Trigram, highest_probability: " + highest_probability.round(4).to_s + " Perplexity: " + perplexity(highest_probability, 3).round(4).to_s
+      puts "Trigram, highest_probability: " + highest_probability.to_s + " Perplexity: " + perplexity(highest_probability, 3).round(4).to_s
       return most_probable_word
     ## if we can find a bigram and bigram exists
     elsif words.count >= 1 and @bigrams[bigram_key] != nil
       # get w2 from grams with highest P(w2|w1)
       highest_probability = 0.0
 
-      # @bigrams[bigram_key].each_key do |word|
       @unigrams.each_key do |word|
         tempProb = probability_of_sequence(bigram_key + " " + word)
         # if P(w1)*P(w2|w1) > highest_probability
-        puts bigram_key + " " + word + " prob: " + tempProb.round(4).to_s
         if tempProb > highest_probability
           highest_probability = tempProb
           most_probable_word = word
         end
       end
       puts "ERROR IN BIGRAMS" if highest_probability == 0.0
-      puts "Bigram, highest_probability: " + highest_probability.round(4).to_s + " Perplexity: " + perplexity(highest_probability, 2).round(4).to_s
+      puts "Bigram, highest_probability: " + highest_probability.to_s + " Perplexity: " + perplexity(highest_probability, 2).round(4).to_s
       return most_probable_word
     ## return random unigram?
     else
@@ -62,13 +58,12 @@ class Trigrammodel
       @unigrams.each_key do |word|
         tempProb = probability_of_sequence(word)
         # if P(w1)*P(w2|w1) > highest_probability
-        puts bigram_key + " " + word + " prob: " + tempProb.round(4).to_s
         if tempProb > highest_probability
           highest_probability = tempProb
           most_probable_word = word
         end
       end
-      puts "Unigram, highest_probability: " + highest_probability.round(4).to_s + " Perplexity: " + perplexity(highest_probability, 1).round(4).to_s
+      puts "Unigram, highest_probability: " + highest_probability.to_s + " Perplexity: " + perplexity(highest_probability, 1).round(4).to_s
       return most_probable_word
     end
   end

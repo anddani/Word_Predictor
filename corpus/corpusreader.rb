@@ -1,5 +1,5 @@
-require "ruby_nlp/corpus"
-require "ruby_nlp/corpus_files/brown"
+require_relative 'ruby_nlp/corpus'
+require_relative 'ruby_nlp/corpus_files/brown'
 
 # corpus = Corpus.new('brown/ca01', BrownCorpusFile)
 # corpus.trigrams
@@ -10,17 +10,16 @@ require "ruby_nlp/corpus_files/brown"
 class Corpusreader
   attr_accessor :corpus
 
-  def initialize(grams, corpus_type)
-    corpus_file = {
+  def initialize(corpus_type)
+    corpus_types = {
       :fiction    => 'brown/ck*',
       :government => 'brown/ch*',
       :adventure  => 'brown/cn*',
       :mystery    => 'brown/cl*',
-      :test       => 'testcorpus',
-      :experiment => 'testcorpus2'
+      :experiment => 'testcorpus'
     }
 
-    @corpus = Corpus.new(corpus_file[corpus_type], BrownCorpusFile)
+    @corpus = Corpus.new(corpus_types[corpus_type], BrownCorpusFile)
   end
 
   def get_unigrams
