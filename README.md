@@ -1,10 +1,10 @@
 Word-Predictor
 ==============
-This word predictor uses the ruby gem (library) ruby_nlp. We packaged this gem in the provided zip-file and you will not have to download and install the gem. Reference to the gem: https://github.com/nathankleyn/ruby_nlp.git
+This word predictor uses the Ruby gem (library) ruby_nlp. We packaged this gem in the provided zip-file and you will not have to download and install the gem. Reference to the gem: https://github.com/nathankleyn/ruby_nlp.git
 
 The Brown corpus is also included in the zip-file and you do not have to download that.
 
-These scripts are compatible with ruby version >= 1.9.
+These scripts are compatible with Ruby version >= 1.9.
 
 ## Corpus setup
 In the `getGrams.rb` file you can choose which of the corpora you want to be used as a training data. Change the symbol to the desired corpus name. The corpora to choose between are:
@@ -19,4 +19,10 @@ In the `getGrams.rb` file you can choose which of the corpora you want to be use
 You can build the `v_size.txt`, `unigrams.txt`, `bigrams.txt` and `trigrams.txt` by running the following script:
 ```sh
 $ ruby getGrams.rb
+```
+
+## Run the program
+After you have built the files with the n-grams, you can use the `searchTrigrams.rb` script to generate an new given a string. To start the script you type:
+```sh
+$ ruby trigrammodel.rb
 ```
