@@ -24,7 +24,7 @@ $ ruby getGrams.rb
 ## Run the program
 After you have built the files with the n-grams, you can use the `searchTrigrams.rb` script to generate an new given a string. To start the script you type:
 ```sh
-$ ruby trigrammodel.rb
+$ ruby searchTrigrams.rb
 ```
 
 Write your sequence of words that you will generate a word to (the string will interpreted as case sensitive). Example:
