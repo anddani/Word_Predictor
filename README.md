@@ -26,3 +26,12 @@ After you have built the files with the n-grams, you can use the `searchTrigrams
 ```sh
 $ ruby trigrammodel.rb
 ```
+
+Write your sequence of words that you will generate a word to (the string will interpreted as case sensitive). Example:
+```sh
+->I was
+Trigram, highest_probability: 3.3445780494608435e-06 Perplexity: 298991.378
+I was hoping
+```
+
+To terminate, type `exit`.
